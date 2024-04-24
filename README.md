@@ -38,7 +38,11 @@
     ```bash
     php artisan migrate
     ```
-13. Виконаємо заповнення даними
+11. ```bash
+    npm i
+    npm run build
+    ```
+12. Виконаємо заповнення даними
     ```bash
     php artisan db:seed
     ```
