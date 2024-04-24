@@ -15,7 +15,7 @@
    ```bash
    docker-compose up --build -d
    ```
-4. Створюємо файл .env
+4. Створюємо файл .env з .env.example
 5. Встановлюємо необхідні значення
 6. Переходимо до docker контейнеру з php
    ```bash
