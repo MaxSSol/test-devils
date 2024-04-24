@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+    web:
+        image: nginx:latest
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www/test-app
+            - ./deployment/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - test-app-network
+        restart: always
+        depends_on:
+            - php
+    php:
+        build: deployment/php
+        restart: always
+        volumes:
+            - ./:/var/www/test-app
+            - ./deployment/php/conf/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            - ./deployment/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+        networks:
+            - test-app-network
+        working_dir: /var/www/test-app
+
+    postgres:
+        image: postgres:latest
+        ports:
+            - '${FORWARD_DB_PORT:-5432}:5432'
+        environment:
+            POSTGRES_DB: '${DB_DATABASE}'
+            POSTGRES_USER: '${DB_USERNAME}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD}'
+        restart: always
+        networks:
+            - test-app-network
+networks:
+    test-app-network:
+        driver: bridge
